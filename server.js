@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // Import routes
 const authorRoute = require('./routes/author.route');
 const studentRoute = require('./routes/student.routes');
+const attendantRoute = require('./routes/attendant.route');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 // Connect routes
 app.use('/authors', authorRoute);
 app.use('/students', studentRoute);
+app.use('/attendants', attendantRoute);
 
 // DB connection
 mongoose.connect(process.env.MONGO_URI)
