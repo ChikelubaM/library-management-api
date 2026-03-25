@@ -11,7 +11,7 @@ A backend REST API built for managing a library system. It handles books, author
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/ChikelubaM/library-management-api.git](https://github.com/ChikelubaM/library-management-api.git)
+   git clone https://github.com/ChikelubaM/library-management-api.git
 
 2.  Install dependencies:
     ```bash
