@@ -12,6 +12,7 @@ A backend REST API built for managing a library system. It handles books, author
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/ChikelubaM/library-management-api.git
+   ```
 
 2.  Install dependencies:
     ```bash
@@ -29,3 +30,6 @@ A backend REST API built for managing a library system. It handles books, author
     node server.js
     ```
     The server will start running on `http://localhost:3000`
+
+## API Documentation
+Full documentation of the API endpoints, including required request bodies, query parameters, and sample responses, can be found here: [View Postman API Documentation](https://documenter.getpostman.com/view/53359392/2sBXikmqWw)
