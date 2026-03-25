@@ -107,6 +107,29 @@ const deleteBook = async (req, res) => {
     };
 };
 
+const getOverdueBooks = async (req, res) => {
+    try {
+        // Get the exact data and time right now
+        const currentDate = new Date();
+
+        // Find books that are OUT and have a returnDate before right now
+        const overdueBooks = await Book.find({
+            status: "OUT",
+            returnDate: { $lt: currentDate }
+        })
+        .populate("borrowedBy", "name email") // Just grabbing name and email to keep it clean
+        .populate("issuedBy", "name");
+
+        res.status(200).json({
+            count: overdueBooks.length,
+            overdueBooks
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    };
+};
+
 const borrowedBook = async (req, res) => {
     try {
         const { id } = req.params;
@@ -170,5 +193,6 @@ module.exports = {
     updateBook,
     deleteBook,
     borrowedBook,
-    returnBook
+    returnBook,
+    getOverdueBooks
 }
