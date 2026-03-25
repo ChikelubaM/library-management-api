@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const authorRoute = require('./routes/author.route');
 const studentRoute = require('./routes/student.routes');
 const attendantRoute = require('./routes/attendant.route');
+const bookRoute = require('./routes/book.route');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/authors', authorRoute);
 app.use('/students', studentRoute);
 app.use('/attendants', attendantRoute);
+app.use('/books', bookRoute);
 
 // DB connection
 mongoose.connect(process.env.MONGO_URI)
