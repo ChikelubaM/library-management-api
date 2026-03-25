@@ -1,4 +1,5 @@
 const Book = require('../models/book.model');
+const Author = require('../models/author.model');
 
 const createBook =  async (req, res) => {
     try {
@@ -16,9 +17,45 @@ const createBook =  async (req, res) => {
 
 const getBooks = async (req, res) => {
     try {
-        const books = await Book.find({});
-        res.status(200).json(books);
+        // Extract pagination and search parameters from the URL query
+        const { page = 1, limit = 10, search } = req.query;
 
+        let query = {};
+
+        if (search) {
+            // Find authors matching the search string (case-insensitive) to get their IDs
+            const matchedAuthors = await Author.find({
+                name: { $regex: search, $options: 'i'}
+            }).select('_id');
+
+            // Build query to match either the book's title OR the matched author IDs
+            query = {
+                $or: [
+                    { title: { $regex: search, $options: 'i' } },
+                    { authors: { $in: matchedAuthors } }
+                ]
+            };
+        };
+
+        // Calculate how many records to skip based on the current page
+        const skip = (page - 1) * limit;
+
+        // Fetch books with populated author data, applying pagination
+        const books = await Book.find(query)
+            .populate("authors")
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        // Count total matching documents to calculate pagination metadata
+        const totalBooks = await Book.countDocuments(query);
+
+        res.status(200).json({
+            books,
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(totalBooks / limit),
+            totalBooks
+        });
+        
     } catch (error) {
         res.status(500).json({message: error.message});
     };
